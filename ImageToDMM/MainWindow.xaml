@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageToDMM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Image to DMI" Height="350" Width="400" ResizeMode="NoResize">
     <Grid>
-        
-    </Grid>
+		<Label Content="Mode" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+		<RadioButton x:Name="PNGMode" Content="From PNG files (turf.png, obj1.png ...)" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" GroupName="ModeSelect"/>
+		<RadioButton x:Name="GIFMode" Content="From GIF file (map.gif)" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" GroupName="ModeSelect"/>
+		<Button Content="Create DMM!" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+		<Label Content="Log" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
+		<RichTextBox HorizontalAlignment="Left" Height="156" Margin="10,160,0,0" VerticalAlignment="Top" Width="374">
+			<FlowDocument>
+				<Paragraph>
+				</Paragraph>
+			</FlowDocument>
+		</RichTextBox>
+	</Grid>
 </Window>

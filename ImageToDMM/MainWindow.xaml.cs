@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using System.IO;
+using System;
+using System.Drawing;
 
 namespace ImageToDMM
 {
@@ -20,9 +10,29 @@ namespace ImageToDMM
     /// </summary>
     public partial class MainWindow : Window
     {
+        Conversion conversion = new Conversion();
+        string programPath = AppDomain.CurrentDomain.BaseDirectory;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (PNGMode.IsChecked == true)
+            {
+                if (!File.Exists(programPath + "turf.png"))
+                {
+                    //Log to RichTextBox
+                    return;
+                }
+                int[,] turfs = conversion.BitmapToArray(new Bitmap(programPath + "turf.png"));
+            }
+            else if (GIFMode.IsChecked == true)
+            {
+
+            }
         }
     }
 }
