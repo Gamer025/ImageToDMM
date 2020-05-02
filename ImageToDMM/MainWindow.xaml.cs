@@ -1,7 +1,8 @@
-﻿using System.Windows;
-using System.IO;
-using System;
+﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Windows;
+using System.Collections.Generic;
 
 namespace ImageToDMM
 {
@@ -20,14 +21,26 @@ namespace ImageToDMM
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            conversion.updateRGBMap(programPath + "colorMap.txt");
+            List<int[,]> arrayList = new List<int[,]>();
             if (PNGMode.IsChecked == true)
             {
-                if (!File.Exists(programPath + "turf.png"))
+                bool breakLoop = true;
+
+                for (int i = 0; breakLoop; i++)
                 {
-                    //Log to RichTextBox
-                    return;
+                    string imagePath = programPath + "layer" + i + ".png";
+
+                    if (!File.Exists(imagePath))
+                    {
+                        //Log to RichTextBox
+                        breakLoop = false;
+                        break;
+                    }
+                    arrayList.Add(conversion.BitmapToArray(new Bitmap(imagePath)));
                 }
-                int[,] turfs = conversion.BitmapToArray(new Bitmap(programPath + "turf.png"));
+                List<int>[,] mergedRGBArray = conversion.mergeArrays(arrayList);
+                List<string>[,] mergedObjectArray = conversion.RGBArraytoObjectArrrays(mergedRGBArray);
             }
             else if (GIFMode.IsChecked == true)
             {
