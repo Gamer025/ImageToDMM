@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace ImageToDMM
 {
@@ -50,26 +52,6 @@ namespace ImageToDMM
             return returnString;
         }
 
-        public List<int>[,] mergeArrays(List<int[,]> arrays)
-        {
-            int arrayHeight = arrays[0].GetLength(0);
-            int arrayWidth = arrays[0].GetLength(1);
-            List<int>[,] returnArray = new List<int>[arrayHeight, arrayWidth];
-            foreach (int[,] currentArray in arrays)
-            {
-                for (int currentHeight = 0; currentHeight < arrayHeight; currentHeight++)
-                {
-                    for (int currentWidth = 0; currentWidth < arrayWidth; currentWidth++)
-                    {
-                        if (returnArray[currentHeight, currentWidth] == null)
-                            returnArray[currentHeight, currentWidth] = new List<int>();
-                        returnArray[currentHeight, currentWidth].Add(currentArray[currentHeight, currentWidth]);
-                    }
-                }
-            }
-            return returnArray;
-        }
-
         public List<string>[,] RGBArraytoObjectArrrays(List<int>[,] RGBArray)
         {
             int arrayHeight = RGBArray.GetLength(0);
@@ -89,6 +71,59 @@ namespace ImageToDMM
                 }
             }
             return returnArray;
+        }
+
+        public string ListToMapTile(List<string> paths)
+        {
+            string returnString = "";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("(\n");
+            sb.Append(string.Join(",\n", paths.Where(s => !string.IsNullOrEmpty(s))));
+            sb.Append(")");
+            returnString = sb.ToString();
+
+            return returnString;
+        }
+
+        public string[,] ObjectArrayToMapDataArray(List<string>[,] objectArray, Dictionary<List<string>, string> ListToIdentifier)
+        {
+            int arrayHeight = objectArray.GetLength(0);
+            int arrayWidth = objectArray.GetLength(1);
+            string[,] returnArray = new string[arrayHeight, arrayWidth];
+
+            for (int currentHeight = 0; currentHeight < arrayHeight; currentHeight++)
+            {
+                for (int currentWidth = 0; currentWidth < arrayWidth; currentWidth++)
+                {
+                    foreach (KeyValuePair<List<string>, string> DictionaryEntry in ListToIdentifier)
+                    {
+                        if (objectArray[currentHeight, currentWidth].SequenceEqual(DictionaryEntry.Key))
+                        {
+                            returnArray[currentHeight, currentWidth] = DictionaryEntry.Value;
+                        }
+                    }
+                }
+            }
+            return returnArray;
+        }
+
+        public string MapDataArrayToDMM (string[,] mapDataArray)
+        {
+            int arrayHeight = mapDataArray.GetLength(0);
+            int arrayWidth = mapDataArray.GetLength(1);
+            StringBuilder sb = new StringBuilder();
+
+            for (int currentHeight = 0; currentHeight < arrayHeight; currentHeight++)
+            {
+                sb.Append("(" + (currentHeight+1) + ",1,1) = {\"\n");
+                for (int currentWidth = 0; currentWidth < arrayWidth; currentWidth++)
+                {
+                    sb.Append(mapDataArray[currentHeight,currentWidth] + "\n");
+                }
+                sb.Append("\"}\n");
+            }
+
+            return sb.ToString();
         }
     }
 }
