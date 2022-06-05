@@ -12,7 +12,7 @@
 		<RadioButton x:Name="GIFMode" Content="From GIF file (map.gif)" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" GroupName="ModeSelect"/>
 		<Button Content="Create DMM!" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
 		<Label Content="Log" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top"/>
-		<RichTextBox HorizontalAlignment="Left" Height="156" Margin="10,160,0,0" VerticalAlignment="Top" Width="374">
+		<RichTextBox HorizontalAlignment="Center" Height="150" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="370">
 			<FlowDocument>
 				<Paragraph>
 				</Paragraph>

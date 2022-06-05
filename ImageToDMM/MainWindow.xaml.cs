@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace ImageToDMM
 {
@@ -65,27 +66,37 @@ namespace ImageToDMM
             List<int[,]> arrayList = new List<int[,]>();
             if (PNGMode.IsChecked == true)
             {
-                bool breakLoop = true;
 
-                for (int i = 0; breakLoop; i++)
+                for (int i = 0; true; i++)
                 {
                     string imagePath = programPath + "layer" + i + ".png";
 
                     if (!File.Exists(imagePath))
-                    {
-                        //Log to RichTextBox
-                        breakLoop = false;
                         break;
-                    }
-                    arrayList.Add(conversion.BitmapToArray(new Bitmap(imagePath)));
+
+                    Bitmap bitmap = new Bitmap(imagePath);
+                    arrayList.Add(conversion.BitmapToArray(bitmap));
+                    bitmap.Dispose(); //Dispose Bitmap so that file gets unlocked
                 }
-                Create_DMM(conversion.RGBArraytoObjectArrrays(helpers.mergeArrays(arrayList)));
-                
+                Create_DMM(conversion.RGBArraytoObjectArrrays(helpers.MergeArrays(arrayList)));
             }
             else if (GIFMode.IsChecked == true)
             {
+                Stream imageStreamSource = new FileStream(programPath + "map.gif", FileMode.Open, FileAccess.Read, FileShare.Read);
+                GifBitmapDecoder decoder = new GifBitmapDecoder(imageStreamSource, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 
+                foreach (BitmapSource bitmapSource in decoder.Frames)
+                {
+                    arrayList.Add(conversion.BitmapToArray(new Bitmap(conversion.BitmapSourceToBitmap(bitmapSource))));
+                }
+                Create_DMM(conversion.RGBArraytoObjectArrrays(helpers.MergeArrays(arrayList)));
+                imageStreamSource.Dispose();
             }
+        }
+
+        private void LogToTextbox (string text, bool isError = false)
+        {
+
         }
     }
 }

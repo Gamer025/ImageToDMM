@@ -8,7 +8,8 @@ namespace ImageToDMM
 {
     class Helpers
     {
-        public List<int>[,] mergeArrays(List<int[,]> arrays)
+        //Takes a List filled with 2D int arrays and gives back one array filled with List<int>
+        public List<int>[,] MergeArrays(List<int[,]> arrays)
         {
             int arrayHeight = arrays[0].GetLength(0);
             int arrayWidth = arrays[0].GetLength(1);
@@ -42,7 +43,6 @@ namespace ImageToDMM
                         returnList.Add(arrayLists[currentHeight, currentWidth]);
                 }
             }
-            List<List<string>> yournewlist = new List<List<string>>();
             return returnList;
 
         }

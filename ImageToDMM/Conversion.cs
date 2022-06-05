@@ -15,7 +15,7 @@ namespace ImageToDMM
         {
             int imageHeight = image.Height; // ---
             int imageWidth = image.Width;  // |||
-            int[,] returnArray = new int[imageWidth, imageHeight];
+            int[,] returnArray = new int[imageHeight, imageWidth];
 
             for (int currentHeight = 0; currentHeight < imageHeight; currentHeight++)
             {
@@ -124,6 +124,20 @@ namespace ImageToDMM
             }
 
             return sb.ToString();
+        }
+
+        public Bitmap BitmapSourceToBitmap (System.Windows.Media.Imaging.BitmapSource bitmapSource)
+        {
+            Bitmap bitmap;
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                System.Windows.Media.Imaging.BitmapEncoder encoder = new System.Windows.Media.Imaging.BmpBitmapEncoder();
+
+                encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmapSource));
+                encoder.Save(outStream);
+                bitmap = new Bitmap(outStream);
+            }
+            return bitmap;
         }
     }
 }
